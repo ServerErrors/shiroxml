@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--1.配置shiro的核心组件securityManager-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="jdbcRealm" />
+    </bean>
+    <!--
+     2.自定义自己realm从数据库获取数据 实现Realm接口
+    -->
+    <bean id="jdbcRealm" class="cn.CGC.ssm.shiro.MyRealm">
+        <!--给realm注入加密比对匹配器，这时加密算法和加密次数要和数据库用户密码加密一样-->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5" />
+                <property name="hashIterations" value="10000" />
+            </bean>
+        </property>
+    </bean>
+    <!--3.配置一个shiroFiltor id：默认和web.xml filterName保存一致-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--1）注入securityManager-->
+        <property name="securityManager" ref="securityManager" />
+        <!--2)访问路径时必须要登录后的资源时，如果没有登录则跳转到登录页-->
+        <property name="loginUrl" value="/login.jsp" />
+        <!--3）登录成功访问主页-->
+        <property name="successUrl" value="/main.jsp" />
+        <!--4）当访问需要权限的资源时，如果没有权限则会跳转到该页面-->
+        <property name="unauthorizedUrl" value="/unpower.jsp" />
+        <!--5）将所有权限通过一个map注入进来-->
+        <property name="filterChainDefinitionMap" ref="map" />
+    </bean>
+    <bean id="shiroFactoryBean" class="cn.CGC.ssm.shiro.shiroFactoryBean"></bean>
+    <bean id="map" factory-bean="shiroFactoryBean" factory-method="getUrl"></bean>
+</beans>
