@@ -22,7 +22,7 @@ public class UserController {
     public String index() {
         return "anon";
     }
-    @RequiresPermissions("save")
+    @RequiresPermissions("user:save")
     @RequestMapping("/save")
     @ResponseBody
     public String save() {
@@ -32,7 +32,7 @@ public class UserController {
         userService.save(user);
         return "success";
     }
-
+    @RequiresPermissions("user:findAll")
     @RequestMapping("/findAll")
     @ResponseBody
     public List<User> loadAll() {

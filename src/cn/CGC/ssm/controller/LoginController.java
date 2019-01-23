@@ -38,6 +38,6 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
-        return "redirect:/login.jsp";
+        return "redirect:/main.jsp";
     }
 }

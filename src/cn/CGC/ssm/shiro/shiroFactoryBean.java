@@ -15,7 +15,8 @@ public class shiroFactoryBean {
         //不需要权限的页面可以匿名访问
         map.put("/anon.jsp", "anon");
         //对应的url需要相关权限
-        map.put("/user/save", "perms[user:save]");
+        //map.put("/user/save", "perms[user:save]");
+        //map.put("/user/findAll", "perms[user:findAll]");
         //根路径及其子子孙孙都需要登录才能访问。
         map.put("/**", "authc");
         return map;
