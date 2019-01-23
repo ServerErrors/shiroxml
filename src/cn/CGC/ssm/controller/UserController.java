@@ -30,7 +30,7 @@ public class UserController {
         user.setUsername("admin");
         user.setPassword(MD5Util.getMD5Password("123"));
         userService.save(user);
-        return "保存用户成功";
+        return "success";
     }
 
     @RequestMapping("/findAll")
